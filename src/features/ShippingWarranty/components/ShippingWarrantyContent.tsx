@@ -45,7 +45,7 @@ const deliveryExpectations: { title: string; text: string; icon: IconType }[] =
     },
     {
       title: "Freight Delivery",
-      text: "The shipping method and available tracking details are confirmed before payment.",
+      text: "Multiple shipping methods ensure our delivery process runs efficiently.",
       icon: FiTruck,
     },
     {
