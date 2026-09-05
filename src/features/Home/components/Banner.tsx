@@ -38,8 +38,8 @@ const Hero = () => {
 
           <p className="mt-5 max-w-147.5 text-[15px] leading-6 text-slate-600 font-['Inter'] sm:text-base">
             Quality Engines & Transmissions at Best Discounted price - 50% Less
-            than Delaers Price - So Skip the junkyard and sketchy Dealership
-            Deals . Book your Qaulity A Grade Engine & Transmissions And
+            than Dealers Price - So Skip the junkyard and sketchy Dealership
+            Deals . Book your Quality A Grade Engine & Transmissions And
             experience Amazon like shopping experience.
           </p>
 

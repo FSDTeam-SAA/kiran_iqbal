@@ -322,15 +322,14 @@ export default function QuoteForm({
         />
 
         <span>
-          {business.socialConsentDisclosure} Read our{" "}
+          By checking this box, you are agreeing to receive SMS messages from
+          A&amp;R AUTO PARTS LLC. This includes SMS messages for conversations
+          (external). Message frequency varies. Message and data rates may
+          apply. See privacy policy at{" "}
           <Link className="text-green-700 underline" href="/privacy-policy">
-            Privacy Policy
-          </Link>{" "}
-          and{" "}
-          <Link className="text-green-700 underline" href="/terms">
-            Terms of Use
+            https://www.arautoparts.com/privacy-policy
           </Link>
-          .
+          . Message HELP for help. Reply STOP to any message to opt out.
         </span>
       </label>
 
