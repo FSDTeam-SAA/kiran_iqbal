@@ -1,4 +1,8 @@
-type PolicySection = { title: string; paragraphs: string[]; items?: string[] };
+type PolicySection = {
+  title: string;
+  paragraphs: string[];
+  items?: string[];
+};
 
 const policySections: PolicySection[] = [
   {
@@ -61,12 +65,22 @@ const policySections: PolicySection[] = [
     title: "How We Share Your Information",
     paragraphs: [
       "We may share information with service providers that help us operate our business, including payment processors, shipping carriers, analytics providers, and customer-support tools. We may also disclose information when required by law or to protect the rights, property, or safety of A&R Auto Parts, our customers, or others.",
+      "SMS consent is not shared with third parties.",
+    ],
+  },
+  {
+    title: "SMS Communications",
+    paragraphs: [
+      "If you provide consent to receive SMS messages from A&R Auto Parts LLC, we may use your telephone number to communicate with you regarding conversations, inquiries, customer service, and other communications you have requested or agreed to receive.",
+      "Message frequency may vary. Message and data rates may apply. You may reply HELP for help or reply STOP to any message to opt out.",
+      "Your decision to provide SMS consent is voluntary, and SMS consent is not shared with third parties.",
     ],
   },
   {
     title: "Third-Party Service Providers",
     paragraphs: [
       "Third-party providers may process information on our behalf only as necessary to provide their services. They are expected to protect information in accordance with applicable requirements and their contractual obligations.",
+      "For clarity, SMS consent is not shared with third parties.",
     ],
   },
   {
@@ -95,39 +109,43 @@ const policySections: PolicySection[] = [
   },
 ];
 
-const PrivacyPolicyContent = () => (
-  <section className="bg-white px-5 py-16 sm:py-20">
-    <div className="container mx-auto max-w-6xl space-y-12">
-      {policySections.map((section) => (
-        <article
-          key={section.title}
-          className="border-l-4 border-green-600 pl-4 sm:pl-5"
-        >
-          <h2 className="font-['Barlow_Condensed'] text-2xl font-bold uppercase tracking-tight text-gray-900">
-            {section.title}
-          </h2>
-          <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-            {section.items && (
-              <ul className="space-y-1.5">
-                {section.items.map((item) => (
-                  <li key={item} className="flex gap-2">
-                    <span
-                      aria-hidden
-                      className="mt-2 size-1.5 shrink-0 rounded-full bg-green-600"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-);
+const PrivacyPolicyContent = () => {
+  return (
+    <section className="bg-white px-5 py-16 sm:py-20">
+      <div className="container mx-auto max-w-6xl space-y-12">
+        {policySections.map((section) => (
+          <article
+            key={section.title}
+            className="border-l-4 border-green-600 pl-4 sm:pl-5"
+          >
+            <h2 className="font-['Barlow_Condensed'] text-2xl font-bold uppercase tracking-tight text-gray-900">
+              {section.title}
+            </h2>
+
+            <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+              {section.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+
+              {section.items && (
+                <ul className="space-y-1.5">
+                  {section.items.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span
+                        aria-hidden="true"
+                        className="mt-2 size-1.5 shrink-0 rounded-full bg-green-600"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export default PrivacyPolicyContent;
