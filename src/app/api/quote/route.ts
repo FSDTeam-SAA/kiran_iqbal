@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const fields = ["year", "make", "model", "part", "name", "phone", "email"] as const;
 type Field = (typeof fields)[number];
@@ -15,6 +16,10 @@ export async function POST(request: Request) {
     if (!/^\S+@\S+\.\S+$/.test(String(body.email))) {
       return NextResponse.json({ message: "Enter a valid email address." }, { status: 400 });
     }
+    const phoneNumber = parsePhoneNumberFromString(String(body.phone), "US");
+    if (!phoneNumber?.isValid() || phoneNumber.country !== "US") {
+      return NextResponse.json({ message: "Enter a valid US phone number." }, { status: 400 });
+    }
 
     const username = process.env.CRM_AUTH_USER;
     const password = process.env.CRM_AUTH_PASSWORD;
@@ -25,7 +30,10 @@ export async function POST(request: Request) {
 
     const lead = new URLSearchParams(
       Object.fromEntries([
-        ...fields.map((field: Field) => [field, String(body[field]).trim()]),
+        ...fields.map((field: Field) => [
+          field,
+          field === "phone" ? phoneNumber.number : String(body[field]).trim(),
+        ]),
         ["host", process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin],
       ]),
     );

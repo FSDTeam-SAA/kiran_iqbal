@@ -245,8 +245,7 @@ See Returns & Refund Policy page for details.`
     },
     {
       question: "Do You Offer a Warranty on Used Engines & Transmissions?",
-      answer: `Yes — all engines and transmissions include up to a 6-month warranty.
-Warranty coverage may vary depending on part and vehicle.
+      answer: `Yes — all engines and transmissions include up to a 6-month to 3-year warranty. Warranty coverage may vary depending on the part and vehicle.
 
 Call 888 290-4476 to confirm coverage before purchase.`
     },

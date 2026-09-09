@@ -193,9 +193,9 @@ const Testimonials = () => {
                 <p className="font-['Barlow_Condensed'] text-lg font-bold text-gray-900">
                   {testimonial.name}
                 </p>
-                <p className="mt-0.5 text-xs text-slate-500">
-                  {testimonial.date}
-                </p>
+                {/* <p className="mt-0.5 text-xs text-slate-500">
+                  {testimonial.date}  
+                </p> */}
               </footer>
                 </article>
               ))}

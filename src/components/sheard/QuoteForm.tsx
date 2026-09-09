@@ -3,6 +3,7 @@
 import { FormEvent, InputHTMLAttributes, useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Phone } from "lucide-react";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { toast } from "sonner";
 import Button from "@/components/ui/button";
 import { approvedClaims, business } from "@/lib/business";
@@ -95,6 +96,7 @@ export default function QuoteForm({
   className = "",
 }: QuoteFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
 
   const [formData, setFormData] = useState<QuoteFormData>({
     year: "",
@@ -124,31 +126,41 @@ export default function QuoteForm({
 
   const submitQuote = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const phoneNumber = parsePhoneNumberFromString(formData.phone, "US");
+    if (!phoneNumber?.isValid() || phoneNumber.country !== "US") {
+      setPhoneError("Enter a valid US phone number.");
+      setSubmitState("error");
+      setMessage("Enter a valid US phone number to continue.");
+      return;
+    }
+
+    const submissionData = { ...formData, phone: phoneNumber.number };
+    setPhoneError("");
     setSubmitState("loading");
     setMessage("");
     try {
       const response = await fetch("/api/quote", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
       const result = (await response.json()) as { message?: string };
       if (!response.ok)
         throw new Error(result.message ?? "Unable to send your request.");
-      onSubmit?.(formData);
+      onSubmit?.(submissionData);
       const {
         year,
         make,
         model: mode,
         part: parts,
-      } = formData;
+      } = submissionData;
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         "event": "generate_lead",
         "form_name": "Inbound Lead Form",
         "user_data": {
-          "email": formData.email.trim(),
-          "phone_number": formData.phone.trim(),
+          "email": submissionData.email.trim(),
+          "phone_number": submissionData.phone,
           "address": {
             year,
             make,
@@ -284,10 +296,21 @@ export default function QuoteForm({
             id="quote-phone"
             label="Phone Number"
             type="tel"
-            placeholder="Phone Number"
+            placeholder="(201) 555-0123"
             value={formData.phone}
-            autoComplete="tel"
-            onChange={(value) => updateField("phone", value)}
+            autoComplete="tel-national"
+            inputMode="tel"
+            error={phoneError}
+            onBlur={() => {
+              const phoneNumber = parsePhoneNumberFromString(formData.phone, "US");
+              if (phoneNumber?.isValid() && phoneNumber.country === "US") {
+                updateField("phone", phoneNumber.formatNational());
+              }
+            }}
+            onChange={(value) => {
+              setPhoneError("");
+              updateField("phone", value);
+            }}
           />
 
           <InputField
@@ -422,7 +445,10 @@ interface InputFieldProps {
   placeholder: string;
   value: string;
   autoComplete?: string;
+  inputMode?: InputHTMLAttributes<HTMLInputElement>["inputMode"];
+  error?: string;
   onChange: (value: string) => void;
+  onBlur?: () => void;
 }
 
 function InputField({
@@ -432,7 +458,10 @@ function InputField({
   placeholder,
   value,
   autoComplete,
+  inputMode,
+  error,
   onChange,
+  onBlur,
 }: InputFieldProps) {
   return (
     <div>
@@ -449,10 +478,15 @@ function InputField({
         type={type}
         value={value}
         autoComplete={autoComplete}
+        inputMode={inputMode}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="min-h-12 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 text-sm text-neutral-800 outline-none transition-all duration-200 placeholder:text-neutral-500 hover:border-green-600/40 focus:border-green-600 focus:bg-white focus:ring-4 focus:ring-green-100"
+        onBlur={onBlur}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className={`min-h-12 w-full rounded-lg border bg-slate-50 px-4 text-sm text-neutral-800 outline-none transition-all duration-200 placeholder:text-neutral-500 hover:border-green-600/40 focus:bg-white focus:ring-4 ${error ? "border-red-500 focus:border-red-600 focus:ring-red-100" : "border-slate-200 focus:border-green-600 focus:ring-green-100"}`}
       />
+      {error && <p id={`${id}-error`} className="mt-1 text-xs font-medium text-red-700">{error}</p>}
     </div>
   );
 }
