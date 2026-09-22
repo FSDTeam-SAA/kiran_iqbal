@@ -34,6 +34,13 @@ export const metadata: Metadata = {
   },
   description: business.description,
   applicationName: business.name,
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png" }],
+  },
   robots: { index: true, follow: true },
 };
 
