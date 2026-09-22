@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, InputHTMLAttributes, useState } from "react";
+import { FormEvent, InputHTMLAttributes, useState, useRef } from "react";
 import Link from "next/link";
-import { ChevronDown, Phone } from "lucide-react";
+import { ChevronDown, Phone, Loader2 } from "lucide-react";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { toast } from "sonner";
 import Button from "@/components/ui/button";
@@ -11,6 +11,54 @@ import {
   makeOptions as referenceMakeOptions,
   modelsByMake as referenceModelsByMake,
 } from "@/data/vehicleOptions";
+
+const SUBMITTED_LEADS_STORAGE_KEY = "ar_submitted_leads";
+
+function getSubmittedLeads(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = sessionStorage.getItem(SUBMITTED_LEADS_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return new Set(parsed);
+    }
+  } catch {
+    // Ignore storage read errors
+  }
+  return new Set();
+}
+
+function recordSubmittedLead(leadKey: string) {
+  if (typeof window === "undefined") return;
+  try {
+    const current = getSubmittedLeads();
+    current.add(leadKey);
+    sessionStorage.setItem(
+      SUBMITTED_LEADS_STORAGE_KEY,
+      JSON.stringify(Array.from(current))
+    );
+  } catch {
+    // Ignore storage write errors
+  }
+}
+
+function getLeadKey(data: {
+  phone: string;
+  email: string;
+  year: string;
+  make: string;
+  model: string;
+  part: string;
+}): string {
+  return [
+    data.phone.trim(),
+    data.email.trim().toLowerCase(),
+    data.year.trim(),
+    data.make.trim().toLowerCase(),
+    data.model.trim().toLowerCase(),
+    data.part.trim().toLowerCase(),
+  ].join("|");
+}
 
 declare global {
   interface Window {
@@ -95,8 +143,13 @@ export default function QuoteForm({
   onSubmit,
   className = "",
 }: QuoteFormProps) {
+  const isSubmittingRef = useRef(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [phoneError, setPhoneError] = useState("");
+  const [submitState, setSubmitState] = useState<
+    "idle" | "loading" | "success" | "error" | "info"
+  >("idle");
+  const [message, setMessage] = useState("");
 
   const [formData, setFormData] = useState<QuoteFormData>({
     year: "",
@@ -110,6 +163,16 @@ export default function QuoteForm({
     website: "",
   });
 
+  const clearStatusOnEdit = () => {
+    if (isSubmitted) {
+      setIsSubmitted(false);
+    }
+    if (submitState === "success" || submitState === "info") {
+      setSubmitState("idle");
+      setMessage("");
+    }
+  };
+
   const updateField = <K extends keyof QuoteFormData>(
     field: K,
     value: QuoteFormData[K],
@@ -118,14 +181,17 @@ export default function QuoteForm({
       ...prev,
       [field]: value,
     }));
-
-    if (isSubmitted) {
-      setIsSubmitted(false);
-    }
+    clearStatusOnEdit();
   };
 
   const submitQuote = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // Prevent double-clicking while request is already processing
+    if (isSubmittingRef.current || submitState === "loading") {
+      return;
+    }
+
     const phoneNumber = parsePhoneNumberFromString(formData.phone, "US");
     if (!phoneNumber?.isValid() || phoneNumber.country !== "US") {
       setPhoneError("Enter a valid US phone number.");
@@ -135,18 +201,56 @@ export default function QuoteForm({
     }
 
     const submissionData = { ...formData, phone: phoneNumber.number };
+    const leadKey = getLeadKey(submissionData);
+
+    // If customer already submitted the exact same information, notify them and block re-submit
+    const submittedLeads = getSubmittedLeads();
+    if (submittedLeads.has(leadKey)) {
+      const alreadySubmittedMsg =
+        "This form has already been submitted. We are already processing your request.";
+      setSubmitState("info");
+      setMessage(alreadySubmittedMsg);
+      toast.info("Form Already Submitted", {
+        description: alreadySubmittedMsg,
+      });
+      return;
+    }
+
+    isSubmittingRef.current = true;
     setPhoneError("");
     setSubmitState("loading");
     setMessage("");
+
     try {
       const response = await fetch("/api/quote", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(submissionData),
       });
-      const result = (await response.json()) as { message?: string };
-      if (!response.ok)
+      const result = (await response.json()) as {
+        message?: string;
+        duplicate?: boolean;
+      };
+
+      if (!response.ok) {
         throw new Error(result.message ?? "Unable to send your request.");
+      }
+
+      if (result.duplicate) {
+        recordSubmittedLead(leadKey);
+        setSubmitState("info");
+        const duplicateMsg =
+          result.message ?? "This form has already been submitted.";
+        setMessage(duplicateMsg);
+        toast.info("Form Already Submitted", {
+          description: duplicateMsg,
+        });
+        return;
+      }
+
+      // Record lead key so duplicate submissions are blocked
+      recordSubmittedLead(leadKey);
+
       onSubmit?.(submissionData);
       const {
         year,
@@ -170,6 +274,7 @@ export default function QuoteForm({
           },
         },
       });
+
       setIsSubmitted(true);
       setSubmitState("success");
       const successMessage =
@@ -177,6 +282,19 @@ export default function QuoteForm({
       setMessage(successMessage);
       toast.success("Quote request submitted", {
         description: successMessage,
+      });
+
+      // Clear all fields immediately as requested
+      setFormData({
+        year: "",
+        make: initialMake,
+        model: "",
+        part: initialPart,
+        name: "",
+        phone: "",
+        email: "",
+        consent: false,
+        website: "",
       });
     } catch (error) {
       const errorMessage =
@@ -186,12 +304,10 @@ export default function QuoteForm({
       toast.error("Quote request failed", {
         description: errorMessage,
       });
+    } finally {
+      isSubmittingRef.current = false;
     }
   };
-  const [submitState, setSubmitState] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  const [message, setMessage] = useState("");
 
   return (
     <form
@@ -243,14 +359,15 @@ export default function QuoteForm({
           value={formData.make}
           options={referenceMakeOptions}
           placeholder="Select Make"
-          onChange={(value) =>
+          onChange={(value) => {
             setFormData((previous) => ({
               ...previous,
               make: value,
               model: "",
               part: initialPart,
-            }))
-          }
+            }));
+            clearStatusOnEdit();
+          }}
         />
 
         <SelectField
@@ -260,13 +377,14 @@ export default function QuoteForm({
           options={referenceModelsByMake[formData.make] ?? []}
           placeholder={formData.make ? "Select Model" : "Select Make First"}
           disabled={!formData.make}
-          onChange={(value) =>
+          onChange={(value) => {
             setFormData((previous) => ({
               ...previous,
               model: value,
               part: initialPart,
-            }))
-          }
+            }));
+            clearStatusOnEdit();
+          }}
         />
 
         <SelectField
@@ -364,17 +482,30 @@ export default function QuoteForm({
           className="w-full"
           disabled={submitState === "loading"}
         >
-          {submitState === "loading"
-            ? "Sending Request…"
-            : isSubmitted
-              ? "Part Request Sent"
-              : "Find My Part"}
+          {submitState === "loading" ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <Loader2 className="size-5 animate-spin" />
+              Sending Request…
+            </span>
+          ) : isSubmitted ? (
+            "Part Request Sent"
+          ) : (
+            "Find My Part"
+          )}
         </Button>
       </div>
 
       <p
         aria-live="polite"
-        className={`mt-4 text-center text-xs font-semibold ${submitState === "error" ? "text-red-700" : submitState === "success" ? "text-green-700" : "text-neutral-500"}`}
+        className={`mt-4 text-center text-xs font-semibold ${
+          submitState === "error"
+            ? "text-red-700"
+            : submitState === "success"
+              ? "text-green-700"
+              : submitState === "info"
+                ? "text-blue-700"
+                : "text-neutral-500"
+        }`}
       >
         {message}
       </p>

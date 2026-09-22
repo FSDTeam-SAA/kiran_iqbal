@@ -6,6 +6,10 @@ type Field = (typeof fields)[number];
 
 const CRM_URL = "https://crm.theprolead.com/api/create_lead_form";
 
+// In-memory deduplication cache to prevent duplicate CRM submissions (5-minute window)
+const recentSubmissions = new Map<string, number>();
+const DEDUPE_WINDOW_MS = 5 * 60 * 1000;
+
 export async function POST(request: Request) {
   try {
     const body = await request.json() as Record<string, unknown>;
@@ -19,6 +23,25 @@ export async function POST(request: Request) {
     const phoneNumber = parsePhoneNumberFromString(String(body.phone), "US");
     if (!phoneNumber?.isValid() || phoneNumber.country !== "US") {
       return NextResponse.json({ message: "Enter a valid US phone number." }, { status: 400 });
+    }
+
+    // Clean up expired entries
+    const now = Date.now();
+    for (const [key, timestamp] of recentSubmissions.entries()) {
+      if (now - timestamp > DEDUPE_WINDOW_MS) {
+        recentSubmissions.delete(key);
+      }
+    }
+
+    // Prevent duplicate lead submission for identical customer request
+    const leadKey = `${phoneNumber.number}:${String(body.email).toLowerCase().trim()}:${String(body.year).trim()}:${String(body.make).toLowerCase().trim()}:${String(body.model).toLowerCase().trim()}:${String(body.part).toLowerCase().trim()}`;
+    const previousTimestamp = recentSubmissions.get(leadKey);
+    if (previousTimestamp && now - previousTimestamp < DEDUPE_WINDOW_MS) {
+      console.warn(`Duplicate lead submission prevented for: ${phoneNumber.number}`);
+      return NextResponse.json({
+        message: "This form has already been submitted. Our team is processing your request.",
+        duplicate: true,
+      });
     }
 
     const username = process.env.CRM_AUTH_USER;
@@ -53,6 +76,8 @@ export async function POST(request: Request) {
       console.error(`CRM lead delivery failed with status ${delivery.status}.`);
       throw new Error("Lead delivery failed");
     }
+
+    recentSubmissions.set(leadKey, Date.now());
 
     return NextResponse.json({ message: "Thanks. Your part request was sent successfully." });
   } catch (error) {
