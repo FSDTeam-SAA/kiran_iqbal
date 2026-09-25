@@ -61,7 +61,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* End Google Tag Manager */}
       </head>
       <body className={`${barlowCondensed.variable} ${inter.variable}`}>
-        <Toaster position="top-right" richColors closeButton />
+        <Toaster position="top-center" richColors closeButton />
         <JsonLd data={organizationSchema} />
         <QuoteModalProvider>
           <SmoothScroll>
