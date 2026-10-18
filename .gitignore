@@ -2,3 +2,5 @@
 node_modules
 config.bat
 !.env.example
+.env.local
+.env
