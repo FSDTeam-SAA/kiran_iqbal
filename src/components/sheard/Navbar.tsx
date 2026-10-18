@@ -46,7 +46,8 @@ const Navbar = () => {
 
                 <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase leading-5 tracking-wide text-stone-50 sm:text-base">
                   {/* A-Grade Quality • 3-Year Limited Warranty • Extra $100 Off with Cash App or Zelle */}
-                  Exciting News! Let’s  celebrate our launch, Avail  free shipping on all orders -Both Commercial and Residential. Use Promo Code LAUNCH-18 when booking your order over the phone.
+                  {/* Exciting News! Let’s  celebrate our launch, Avail  free shipping on all orders -Both Commercial and Residential. Use Promo Code LAUNCH-18 when booking your order over the phone. */}
+                  50% less Dealers Price With Free Shipping - Extented warranty up to 3 years  and In house Financing Options . Call For quick Quote - 888 290 4476 .
                 </span>
               </div>
             </div>
