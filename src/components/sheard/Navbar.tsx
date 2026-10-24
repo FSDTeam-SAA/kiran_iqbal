@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { FiChevronDown, FiMenu, FiPhone, FiX } from "react-icons/fi";
 import Button from "@/components/ui/button";
 import { navItems } from "@/Content/data";
 import { business } from "@/lib/business";
+import { useHalloween } from "./HalloweenContext";
 
 const logo = "/logo1.png";
 const policyLinks = [
@@ -18,6 +20,7 @@ const policyLinks = [
 const Navbar = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { openHalloweenModal, timeRemaining } = useHalloween();
 
   const navLinkClass = (isActive: boolean) =>
     `font-['Inter'] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-600 ${
@@ -28,26 +31,18 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Shipping Ticker */}
+      {/* Shipping & Halloween Ticker */}
       <div className="w-full overflow-hidden bg-green-600">
         <div className="flex w-max animate-marquee whitespace-nowrap">
           {[...Array(6)].map((_, index) => (
             <div key={index} className="flex items-center gap-10 py-2 pr-10">
               <div className="flex items-center gap-2">
                 <span className="size-1.5 shrink-0 rounded-full bg-stone-50/70" />
-
-                {/* <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase leading-5 tracking-wide text-stone-50 sm:text-base">
-                  Home delivery • 20% Off Engines & Transmissions
-                </span> */}
               </div>
 
               <div className="flex items-center gap-2">
-                {/* <span className="size-1.5 shrink-0 rounded-full bg-stone-50/70" /> */}
-
                 <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase leading-5 tracking-wide text-stone-50 sm:text-base">
-                  {/* A-Grade Quality • 3-Year Limited Warranty • Extra $100 Off with Cash App or Zelle */}
-                  {/* Exciting News! Let’s  celebrate our launch, Avail  free shipping on all orders -Both Commercial and Residential. Use Promo Code LAUNCH-18 when booking your order over the phone. */}
-                  50% less Dealers Price With Free Shipping - Extented warranty up to 3 years  and In house Financing Options . Call For quick Quote - 888 290 4476 .
+                  🎃 HALLOWEEN SPECIAL: Free Car Care Kit with Code HALO-2026 • 50% less Dealers Price With Free Shipping - Extended warranty up to 3 years and In house Financing Options . Call For quick Quote - 888 290 4476 .
                 </span>
               </div>
             </div>
@@ -125,6 +120,43 @@ const Navbar = () => {
               CONTACT
             </Link>
 
+            {/* Moving Gift Box 🎁 on right side of header */}
+            {!timeRemaining.isExpired && (
+              <motion.button
+                type="button"
+                onClick={openHalloweenModal}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                title="Click box to claim your Free Halloween Gift"
+                aria-label="Click box to claim your Free Halloween Gift"
+                className="group relative flex items-center gap-2 rounded-full border border-amber-400/70 bg-gradient-to-r from-[#210e30] via-[#351547] to-[#1c0c29] px-3.5 py-1.5 shadow-sm hover:shadow transition cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"
+              >
+                <motion.span
+                  animate={{
+                    rotate: [0, -12, 12, -8, 8, -4, 0],
+                    scale: [1, 1.15, 1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2.2,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                    ease: "easeInOut",
+                  }}
+                  className="text-xl filter drop-shadow-sm"
+                >
+                  🎁
+                </motion.span>
+                <div className="flex flex-col text-left">
+                  <span className="font-['Barlow_Condensed'] text-[10px] font-black uppercase tracking-wider text-amber-300">
+                    Halloween Gift 🎃
+                  </span>
+                  <span className="font-['Inter'] text-xs font-bold text-white whitespace-nowrap group-hover:text-amber-200 transition-colors">
+                    Click box to claim Free Gift
+                  </span>
+                </div>
+              </motion.button>
+            )}
+
             <Button
               variant="primary"
               href={`tel:${business.phone}`}
@@ -136,6 +168,39 @@ const Navbar = () => {
 
           {/* Mobile Actions */}
           <div className="flex items-center gap-2 lg:hidden">
+            {/* Mobile Moving Gift Box 🎁 */}
+            {!timeRemaining.isExpired && (
+              <motion.button
+                type="button"
+                onClick={openHalloweenModal}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                title="Click box to claim your Free Halloween Gift"
+                aria-label="Click box to claim your Free Halloween Gift"
+                className="relative inline-flex size-11 items-center justify-center rounded-lg border border-amber-400/70 bg-gradient-to-br from-[#210e30] via-[#351547] to-[#160822] text-white shadow-sm transition hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 cursor-pointer"
+              >
+                <motion.span
+                  animate={{
+                    rotate: [0, -12, 12, -8, 8, -4, 0],
+                    scale: [1, 1.15, 1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                    ease: "easeInOut",
+                  }}
+                  className="text-2xl"
+                >
+                  🎁
+                </motion.span>
+                <span className="absolute -top-1 -right-1 flex size-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                  <span className="relative inline-flex size-2.5 rounded-full bg-amber-400 border border-[#210e30]" />
+                </span>
+              </motion.button>
+            )}
+
             <a
               href={`tel:${business.phone}`}
               aria-label="Call A&R Auto Parts"
@@ -170,6 +235,32 @@ const Navbar = () => {
               className="absolute left-0 top-full w-full border-b border-slate-200 bg-white px-4 py-3 shadow-xl lg:hidden"
             >
               <div className="mx-auto flex max-w-2xl flex-col gap-1">
+                {/* Mobile Menu Halloween Offer Banner */}
+                {!timeRemaining.isExpired && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      openHalloweenModal();
+                    }}
+                    className="mb-2 flex items-center justify-between rounded-xl border-2 border-amber-400/80 bg-gradient-to-r from-[#210e30] via-[#351547] to-[#1c0c29] p-3 text-left text-white shadow-md cursor-pointer transition hover:brightness-110"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl animate-bounce">🎁</span>
+                      <div>
+                        <div className="font-['Barlow_Condensed'] text-sm font-extrabold uppercase tracking-wide text-amber-300">
+                          Claim Your Free Halloween Gift
+                        </div>
+                        <div className="text-xs text-slate-200">
+                          Free car care kit with code <strong className="text-amber-200 font-mono">HALO-2026</strong>
+                        </div>
+                      </div>
+                    </div>
+                    <span className="rounded-lg bg-orange-500 px-2.5 py-1 text-xs font-black text-gray-950 uppercase">
+                      Claim
+                    </span>
+                  </button>
+                )}
                 {navItems.filter((item) => item.href !== "/contact").map((item) => {
                   const isActive = pathname === item.href;
 

@@ -10,6 +10,7 @@ import HowItWorks from "@/features/Home/components/HowItWorks";
 import WhyChooseUs from "@/features/Home/components/WhyChooseUs";
 import PaymentOptions from "@/features/Home/components/PaymentOptions";
 import TrustBar from "@/features/Home/components/FeatureBar";
+import HalloweenSection from "@/features/Home/components/HalloweenSection";
 import WarrantyBanner from "@/features/Home/components/WarrantyBanner";
 import Brands from "@/features/Home/components/Brands";
 import FindParts from "@/features/Home/components/FindParts";

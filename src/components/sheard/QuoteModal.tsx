@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { FiX } from "react-icons/fi";
 import QuoteForm, { QuoteFormData } from "./QuoteForm";
 
@@ -35,17 +36,25 @@ export function QuoteModal({
   description,
   onSubmit,
 }: QuoteModalProps) {
-  // Lock body scroll when modal is open
+  const lenis = useLenis();
+
+  // Lock body scroll and pause Lenis when modal is open
   useEffect(() => {
     if (isOpen) {
+      lenis?.stop();
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      lenis?.start();
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      lenis?.start();
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, lenis]);
 
   // Close on Escape key press
   useEffect(() => {
@@ -61,7 +70,10 @@ export function QuoteModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div
+          data-lenis-prevent
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+        >
           {/* Backdrop overlay */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -75,6 +87,8 @@ export function QuoteModal({
 
           {/* Modal Card (compact size as requested: "coto modal hobe") */}
           <motion.div
+            data-lenis-prevent
+            onClick={(e) => e.stopPropagation()}
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
@@ -86,13 +100,13 @@ export function QuoteModal({
               type="button"
               onClick={onClose}
               aria-label="Close quote modal"
-              className="absolute right-3 top-3 z-20 inline-flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-600"
+              className="absolute right-3 top-3 z-20 inline-flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-600 cursor-pointer"
             >
               <FiX className="size-5" />
             </button>
 
             {/* Quote Form wrapped inside modal container */}
-            <div className="max-h-[85vh] overflow-y-auto p-1 sm:p-2">
+            <div data-lenis-prevent className="max-h-[85vh] overflow-y-auto p-1 sm:p-2 overscroll-contain">
               <QuoteForm
                 title={title}
                 badge={badge}

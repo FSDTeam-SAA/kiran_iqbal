@@ -10,6 +10,9 @@ import FloatingCallButton from "@/components/sheard/FloatingCallButton";
 import SiteMotion from "@/components/sheard/SiteMotion";
 import SmoothScroll from "@/components/sheard/SmoothScroll";
 import { QuoteModalProvider } from "@/components/sheard/QuoteModal";
+import { HalloweenProvider } from "@/components/sheard/HalloweenContext";
+import HalloweenFloatingTrigger from "@/components/sheard/HalloweenFloatingTrigger";
+import HalloweenModal from "@/components/sheard/HalloweenModal";
 import { JsonLd, organizationSchema } from "@/components/seo/JsonLd";
 import { business } from "@/lib/business";
 import { siteUrl } from "@/lib/seo";
@@ -64,14 +67,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <Toaster position="top-center" richColors closeButton />
         <JsonLd data={organizationSchema} />
         <QuoteModalProvider>
-          <SmoothScroll>
-            <Navbar />
-            {children}
-            <Footer />
-            <FloatingCallButton />
-            <WhatsAppButton />
-            <SiteMotion />
-          </SmoothScroll>
+          <HalloweenProvider>
+            <SmoothScroll>
+              <Navbar />
+              {children}
+              <Footer />
+              <FloatingCallButton />
+              <WhatsAppButton />
+              <HalloweenFloatingTrigger />
+              <HalloweenModal />
+              <SiteMotion />
+            </SmoothScroll>
+          </HalloweenProvider>
         </QuoteModalProvider>
       </body>
     </html>
