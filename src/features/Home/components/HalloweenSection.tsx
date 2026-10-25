@@ -71,15 +71,15 @@ export default function HalloweenSection() {
               className="mt-1 font-['Barlow_Condensed'] text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase leading-[0.92] tracking-tight"
             >
               <span className="block bg-gradient-to-r from-amber-200 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_2px_22px_rgba(255,140,0,0.55)]">
-                Free Car Care Kit
+                Free Car Cleaning Bucket
               </span>
               <span className="text-xl sm:text-3xl font-bold text-gray-100 normal-case font-['Inter'] block mt-2">
-                with every eligible engine or transmission
+                with every engine or transmission purchase
               </span>
             </h2>
 
             <p className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-slate-300 font-['Inter']">
-              Order a <strong className="text-white">tested, VIN-matched used engine or transmission</strong> from A&R Auto Parts by Halloween night, and we’ll ship a car cleaning kit right along with your part. On us.
+              Order a <strong className="text-white">tested, VIN-matched used engine or transmission</strong> from A&R Auto Parts by Halloween night, and we’ll ship a complimentary whole car cleaning bucket right along with your part. On us.
             </p>
 
             {/* Countdown Units */}
@@ -191,7 +191,7 @@ export default function HalloweenSection() {
         {/* How to Claim Steps */}
         <div className="mt-16 sm:mt-20 border-t border-white/10 pt-10">
           <h3 className="text-center font-['Barlow_Condensed'] text-2xl sm:text-3xl font-extrabold uppercase tracking-wide text-white">
-            How To Claim Your <span className="text-orange-400">Free Car Care Kit</span>
+            How To Claim Your <span className="text-orange-400">Free Car Cleaning Bucket</span>
           </h3>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -226,9 +226,9 @@ export default function HalloweenSection() {
                 3
               </span>
               <div>
-                <strong className="block text-lg font-bold text-white">Your Kit Ships Free</strong>
+                <strong className="block text-lg font-bold text-white">Your Bucket Ships Free</strong>
                 <p className="mt-1 text-sm text-slate-300 leading-relaxed">
-                  Our team adds the promo code right to your order, and your car care kit ships alongside your part!
+                  Our team adds the promo code right to your order, and your whole car cleaning bucket ships alongside your part!
                 </p>
               </div>
             </div>

@@ -31,18 +31,30 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Shipping & Halloween Ticker */}
-      <div className="w-full overflow-hidden bg-green-600">
-        <div className="flex w-max animate-marquee whitespace-nowrap">
+      {/* Halloween Deal Ticker */}
+      <div
+        onClick={openHalloweenModal}
+        className="w-full overflow-hidden bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 cursor-pointer hover:brightness-105 transition-all"
+        title="Click to view Free Halloween Gift offer"
+      >
+        <div className="flex w-max animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
           {[...Array(6)].map((_, index) => (
-            <div key={index} className="flex items-center gap-10 py-2 pr-10">
+            <div key={index} className="flex items-center gap-6 py-2.5 pr-6 sm:gap-8 sm:py-3 sm:pr-8">
               <div className="flex items-center gap-2">
-                <span className="size-1.5 shrink-0 rounded-full bg-stone-50/70" />
+                <span className="text-base sm:text-lg">🎃</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase leading-5 tracking-wide text-stone-50 sm:text-base">
-                  🎃 HALLOWEEN SPECIAL: Free Car Care Kit with Code HALO-2026 • 50% less Dealers Price With Free Shipping - Extended warranty up to 3 years and In house Financing Options . Call For quick Quote - 888 290 4476 .
+                <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase tracking-wider text-white sm:text-base">
+                  Free Halloween Gift for Everyone ! Now with Every Engine or Transmission Purchase Get whole Car Cleaning Bucket For Free - Use Coupon Code :{" "}
+                  <span className="mx-1 inline-block rounded bg-black/25 px-2 py-0.5 font-mono text-xs font-black tracking-widest text-amber-300 sm:text-sm">
+                    *HALO-2026 *
+                  </span>{" "}
+                  on booking your Part - OFFER is Valid Till 31st October 2026 . For More Information Dial Toll Free :{" "}
+                  <span className="font-extrabold text-amber-100">
+                    888-290 4476
+                  </span>
+                  .
                 </span>
               </div>
             </div>
@@ -72,7 +84,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <nav
             aria-label="Primary navigation"
-            className="hidden items-center gap-4 lg:flex xl:gap-7"
+            className="hidden items-center gap-2.5 lg:flex xl:gap-5 2xl:gap-7"
           >
             {navItems.filter((item) => item.href !== "/contact").map((item) => {
               const isActive = pathname === item.href;
@@ -120,7 +132,7 @@ const Navbar = () => {
               CONTACT
             </Link>
 
-            {/* Moving Gift Box 🎁 on right side of header */}
+            {/* Compact Halloween Gift Box 🎁 */}
             {!timeRemaining.isExpired && (
               <motion.button
                 type="button"
@@ -129,7 +141,7 @@ const Navbar = () => {
                 whileTap={{ scale: 0.96 }}
                 title="Click box to claim your Free Halloween Gift"
                 aria-label="Click box to claim your Free Halloween Gift"
-                className="group relative flex items-center gap-2 rounded-full border border-amber-400/70 bg-gradient-to-r from-[#210e30] via-[#351547] to-[#1c0c29] px-3.5 py-1.5 shadow-sm hover:shadow transition cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"
+                className="group relative flex items-center gap-1.5 rounded-full border border-amber-400/80 bg-gradient-to-r from-[#210e30] via-[#351547] to-[#1c0c29] px-3 py-1.5 shadow-sm hover:shadow transition-all cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 shrink-0"
               >
                 <motion.span
                   animate={{
@@ -142,16 +154,16 @@ const Navbar = () => {
                     repeatDelay: 1,
                     ease: "easeInOut",
                   }}
-                  className="text-xl filter drop-shadow-sm"
+                  className="text-lg xl:text-xl"
                 >
                   🎁
                 </motion.span>
-                <div className="flex flex-col text-left">
-                  <span className="font-['Barlow_Condensed'] text-[10px] font-black uppercase tracking-wider text-amber-300">
-                    Halloween Gift 🎃
+                <div className="flex items-center gap-1.5 text-left">
+                  <span className="font-['Barlow_Condensed'] text-xs font-black uppercase tracking-wider text-amber-300 whitespace-nowrap">
+                    FREE GIFT 🎃
                   </span>
-                  <span className="font-['Inter'] text-xs font-bold text-white whitespace-nowrap group-hover:text-amber-200 transition-colors">
-                    Click box to claim Free Gift
+                  <span className="rounded bg-orange-500 px-1.5 py-0.5 font-['Inter'] text-[10px] font-black uppercase text-gray-950 whitespace-nowrap">
+                    Bucket
                   </span>
                 </div>
               </motion.button>
@@ -160,7 +172,7 @@ const Navbar = () => {
             <Button
               variant="primary"
               href={`tel:${business.phone}`}
-              className="px-4 py-2.5"
+              className="px-3.5 py-2 text-xs xl:px-4 xl:py-2.5 xl:text-sm whitespace-nowrap shrink-0"
             >
               {business.phone}
             </Button>
@@ -177,7 +189,7 @@ const Navbar = () => {
                 whileTap={{ scale: 0.96 }}
                 title="Click box to claim your Free Halloween Gift"
                 aria-label="Click box to claim your Free Halloween Gift"
-                className="relative inline-flex size-11 items-center justify-center rounded-lg border border-amber-400/70 bg-gradient-to-br from-[#210e30] via-[#351547] to-[#160822] text-white shadow-sm transition hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 cursor-pointer"
+                className="relative inline-flex size-10 sm:size-11 items-center justify-center rounded-lg border border-amber-400/80 bg-gradient-to-br from-[#210e30] via-[#351547] to-[#160822] text-white shadow-sm transition hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 cursor-pointer shrink-0"
               >
                 <motion.span
                   animate={{
@@ -190,7 +202,7 @@ const Navbar = () => {
                     repeatDelay: 1,
                     ease: "easeInOut",
                   }}
-                  className="text-2xl"
+                  className="text-xl sm:text-2xl"
                 >
                   🎁
                 </motion.span>
@@ -204,7 +216,7 @@ const Navbar = () => {
             <a
               href={`tel:${business.phone}`}
               aria-label="Call A&R Auto Parts"
-              className="inline-flex size-11 items-center justify-center rounded-lg border border-green-600 text-green-700 transition hover:bg-green-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              className="inline-flex size-10 sm:size-11 items-center justify-center rounded-lg border border-green-600 text-green-700 transition hover:bg-green-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 shrink-0"
             >
               <FiPhone aria-hidden className="size-5" />
             </a>
@@ -217,7 +229,7 @@ const Navbar = () => {
               aria-controls="mobile-navigation"
               aria-expanded={isMenuOpen}
               onClick={() => setIsMenuOpen((open) => !open)}
-              className="inline-flex size-11 items-center justify-center rounded-lg bg-green-600 text-white transition hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              className="inline-flex size-10 sm:size-11 items-center justify-center rounded-lg bg-green-600 text-white transition hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 shrink-0"
             >
               {isMenuOpen ? (
                 <FiX aria-hidden className="size-6" />
@@ -252,7 +264,7 @@ const Navbar = () => {
                           Claim Your Free Halloween Gift
                         </div>
                         <div className="text-xs text-slate-200">
-                          Free car care kit with code <strong className="text-amber-200 font-mono">HALO-2026</strong>
+                          Free whole car cleaning bucket with code <strong className="text-amber-200 font-mono">HALO-2026</strong>
                         </div>
                       </div>
                     </div>

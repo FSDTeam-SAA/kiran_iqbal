@@ -81,7 +81,7 @@ export function HalloweenProvider({ children }: { children: ReactNode }) {
     const performCopy = () => {
       setIsCopied(true);
       toast.success("Halloween Promo Code Copied!", {
-        description: `Use code ${code} over the phone or with your quote to claim your Free Car Care Kit!`,
+        description: `Use code ${code} over the phone or with your quote to claim your Free Car Cleaning Bucket!`,
       });
       setTimeout(() => setIsCopied(false), 2500);
     };

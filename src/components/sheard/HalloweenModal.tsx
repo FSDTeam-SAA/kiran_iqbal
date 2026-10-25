@@ -149,15 +149,15 @@ export default function HalloweenModal() {
                     className="mt-1 font-['Barlow_Condensed'] text-3xl sm:text-5xl font-extrabold uppercase leading-[0.95] tracking-tight"
                   >
                     <span className="block bg-gradient-to-r from-amber-200 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_2px_18px_rgba(255,140,0,0.5)]">
-                      Free Car Care Kit
+                      Free Car Cleaning Bucket
                     </span>
                     <span className="text-xl sm:text-2xl font-bold text-gray-100 normal-case font-['Inter'] block mt-1">
-                      with every eligible engine or transmission
+                      with every engine or transmission purchase
                     </span>
                   </h2>
 
                   <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-300 font-['Inter']">
-                    Order a <strong className="text-white">tested, VIN-matched used engine or transmission</strong> from A&R Auto Parts by Halloween night, and we’ll ship a premium car cleaning kit right along with your part. On us.
+                    Order a <strong className="text-white">tested, VIN-matched used engine or transmission</strong> from A&R Auto Parts by Halloween night, and we’ll ship a complimentary whole car cleaning bucket right along with your part. On us.
                   </p>
 
                   {/* Countdown Timer */}
@@ -304,9 +304,9 @@ export default function HalloweenModal() {
                       3
                     </div>
                     <div>
-                      <strong className="block text-sm font-bold text-white">Free Kit Ships With Order</strong>
+                      <strong className="block text-sm font-bold text-white">Free Bucket Ships With Order</strong>
                       <p className="text-xs text-gray-300 mt-0.5">
-                        Our team adds your complimentary car care kit to the shipment at zero extra charge!
+                        Our team adds your complimentary whole car cleaning bucket to the shipment at zero extra charge!
                       </p>
                     </div>
                   </div>
