@@ -34,31 +34,100 @@ const Navbar = () => {
       {/* Halloween Deal Ticker */}
       <div
         onClick={openHalloweenModal}
-        className="w-full overflow-hidden bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 cursor-pointer hover:brightness-105 transition-all"
+        className="group relative w-full overflow-hidden bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 cursor-pointer transition-all hover:brightness-105"
         title="Click to view Free Halloween Gift offer"
       >
-        <div className="flex w-max animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
-          {[...Array(6)].map((_, index) => (
-            <div key={index} className="flex items-center gap-6 py-2.5 pr-6 sm:gap-8 sm:py-3 sm:pr-8">
-              <div className="flex items-center gap-2">
-                <span className="text-base sm:text-lg">🎃</span>
-              </div>
+        {/* Soft edge gradient fades for smooth entrance and exit across all screen sizes */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-orange-600 to-transparent sm:w-16" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-orange-600 to-transparent sm:w-16" />
 
-              <div className="flex items-center gap-2">
+        <div className="flex w-max whitespace-nowrap">
+          {/* Track 1 */}
+          <div className="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={`t1-${i}`}
+                className="flex items-center gap-3 py-2.5 pr-8 sm:gap-5 sm:py-3 sm:pr-12"
+              >
+                <div className="flex items-center gap-1.5 rounded-full bg-black/25 px-2.5 py-0.5">
+                  <span className="text-base sm:text-lg">🎃</span>
+                  <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-amber-300 sm:text-sm">
+                    Free Halloween Gift
+                  </span>
+                </div>
+
                 <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase tracking-wider text-white sm:text-base">
-                  Free Halloween Gift for Everyone ! Now with Every Engine or Transmission Purchase Get whole Car Cleaning Bucket For Free - Use Coupon Code :{" "}
-                  <span className="mx-1 inline-block rounded bg-black/25 px-2 py-0.5 font-mono text-xs font-black tracking-widest text-amber-300 sm:text-sm">
-                    *HALO-2026 *
-                  </span>{" "}
-                  on booking your Part - OFFER is Valid Till 31st October 2026 . For More Information Dial Toll Free :{" "}
+                  Now with Every Engine or Transmission Purchase Get whole Car Cleaning Bucket For Free!
+                </span>
+
+                <div className="flex items-center gap-1.5 font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wide text-amber-100 sm:text-sm">
+                  <span>Use Coupon Code:</span>
+                  <span className="rounded bg-black/30 px-2 py-0.5 font-mono text-xs font-black tracking-widest text-amber-300 sm:text-sm">
+                    *HALO-2026*
+                  </span>
+                  <span>on booking your Part</span>
+                </div>
+
+                <span className="font-['Barlow_Condensed'] text-xs font-semibold uppercase tracking-wider text-amber-100 sm:text-sm">
+                  ● OFFER is Valid Till 31st October 2026
+                </span>
+
+                <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-white sm:text-sm">
+                  ● For More Information Dial Toll Free:{" "}
                   <span className="font-extrabold text-amber-100">
                     888-290 4476
                   </span>
-                  .
                 </span>
+
+                <span className="text-amber-300/60 font-bold">✦</span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Track 2 (Identical duplicate for 100% seamless, continuous loop) */}
+          <div
+            aria-hidden="true"
+            className="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"
+          >
+            {[0, 1, 2].map((i) => (
+              <div
+                key={`t2-${i}`}
+                className="flex items-center gap-3 py-2.5 pr-8 sm:gap-5 sm:py-3 sm:pr-12"
+              >
+                <div className="flex items-center gap-1.5 rounded-full bg-black/25 px-2.5 py-0.5">
+                  <span className="text-base sm:text-lg">🎃</span>
+                  <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-amber-300 sm:text-sm">
+                    Free Halloween Gift
+                  </span>
+                </div>
+
+                <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase tracking-wider text-white sm:text-base">
+                  Now with Every Engine or Transmission Purchase Get whole Car Cleaning Bucket For Free!
+                </span>
+
+                <div className="flex items-center gap-1.5 font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wide text-amber-100 sm:text-sm">
+                  <span>Use Coupon Code:</span>
+                  <span className="rounded bg-black/30 px-2 py-0.5 font-mono text-xs font-black tracking-widest text-amber-300 sm:text-sm">
+                    *HALO-2026*
+                  </span>
+                  <span>on booking your Part</span>
+                </div>
+
+                <span className="font-['Barlow_Condensed'] text-xs font-semibold uppercase tracking-wider text-amber-100 sm:text-sm">
+                  ● OFFER is Valid Till 31st October 2026
+                </span>
+
+                <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-white sm:text-sm">
+                  ● For More Information Dial Toll Free:{" "}
+                  <span className="font-extrabold text-amber-100">
+                    888-290 4476
+                  </span>
+                </span>
+
+                <span className="text-amber-300/60 font-bold">✦</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
