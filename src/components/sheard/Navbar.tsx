@@ -22,6 +22,13 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openHalloweenModal, timeRemaining } = useHalloween();
 
+  const handleTickerClick = () => {
+    const element = document.getElementById("find-your-part");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const navLinkClass = (isActive: boolean) =>
     `font-['Inter'] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-600 ${
       isActive
@@ -31,11 +38,11 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Halloween Deal Ticker */}
+      {/* Blessed Friday Deal Ticker */}
       <div
-        onClick={openHalloweenModal}
+        onClick={handleTickerClick}
         className="group relative w-full overflow-hidden bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 cursor-pointer transition-all hover:brightness-105"
-        title="Click to view Free Halloween Gift offer"
+        title="Blessed Friday Sale: Free $100 Gift Card and Car Wash Kit with Every Purchase"
       >
         {/* Soft edge gradient fades for smooth entrance and exit across all screen sizes */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-orange-600 to-transparent sm:w-16" />
@@ -44,39 +51,31 @@ const Navbar = () => {
         <div className="flex w-max whitespace-nowrap">
           {/* Track 1 */}
           <div className="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]">
-            {[0, 1, 2].map((i) => (
+            {[0, 1, 2, 3].map((i) => (
               <div
                 key={`t1-${i}`}
                 className="flex items-center gap-3 py-2.5 pr-8 sm:gap-5 sm:py-3 sm:pr-12"
               >
                 <div className="flex items-center gap-1.5 rounded-full bg-black/25 px-2.5 py-0.5">
-                  <span className="text-base sm:text-lg">🎃</span>
+                  <span className="text-base sm:text-lg">🎁</span>
                   <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-amber-300 sm:text-sm">
-                    Free Halloween Gift
+                    Blessed Friday Sale
                   </span>
                 </div>
 
                 <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase tracking-wider text-white sm:text-base">
-                  Now with Every Engine or Transmission Purchase Get whole Car Cleaning Bucket For Free!
-                </span>
-
-                <div className="flex items-center gap-1.5 font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wide text-amber-100 sm:text-sm">
-                  <span>Use Coupon Code:</span>
-                  <span className="rounded bg-black/30 px-2 py-0.5 font-mono text-xs font-black tracking-widest text-amber-300 sm:text-sm">
-                    *HALO-2026*
-                  </span>
-                  <span>on booking your Part</span>
-                </div>
-
-                <span className="font-['Barlow_Condensed'] text-xs font-semibold uppercase tracking-wider text-amber-100 sm:text-sm">
-                  ● OFFER is Valid Till 31st October 2026
+                  With every purchase you make you will get a $100 gift card and car wash kit for free!
                 </span>
 
                 <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-white sm:text-sm">
                   ● For More Information Dial Toll Free:{" "}
-                  <span className="font-extrabold text-amber-100">
+                  <a
+                    href={`tel:${business.phone}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-extrabold text-amber-100 hover:underline"
+                  >
                     888-290 4476
-                  </span>
+                  </a>
                 </span>
 
                 <span className="text-amber-300/60 font-bold">✦</span>
@@ -89,39 +88,31 @@ const Navbar = () => {
             aria-hidden="true"
             className="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"
           >
-            {[0, 1, 2].map((i) => (
+            {[0, 1, 2, 3].map((i) => (
               <div
                 key={`t2-${i}`}
                 className="flex items-center gap-3 py-2.5 pr-8 sm:gap-5 sm:py-3 sm:pr-12"
               >
                 <div className="flex items-center gap-1.5 rounded-full bg-black/25 px-2.5 py-0.5">
-                  <span className="text-base sm:text-lg">🎃</span>
+                  <span className="text-base sm:text-lg">🎁</span>
                   <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-amber-300 sm:text-sm">
-                    Free Halloween Gift
+                    Blessed Friday Sale
                   </span>
                 </div>
 
                 <span className="font-['Barlow_Condensed'] text-sm font-bold uppercase tracking-wider text-white sm:text-base">
-                  Now with Every Engine or Transmission Purchase Get whole Car Cleaning Bucket For Free!
-                </span>
-
-                <div className="flex items-center gap-1.5 font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wide text-amber-100 sm:text-sm">
-                  <span>Use Coupon Code:</span>
-                  <span className="rounded bg-black/30 px-2 py-0.5 font-mono text-xs font-black tracking-widest text-amber-300 sm:text-sm">
-                    *HALO-2026*
-                  </span>
-                  <span>on booking your Part</span>
-                </div>
-
-                <span className="font-['Barlow_Condensed'] text-xs font-semibold uppercase tracking-wider text-amber-100 sm:text-sm">
-                  ● OFFER is Valid Till 31st October 2026
+                  With every purchase you make you will get a $100 gift card and car wash kit for free!
                 </span>
 
                 <span className="font-['Barlow_Condensed'] text-xs font-bold uppercase tracking-wider text-white sm:text-sm">
                   ● For More Information Dial Toll Free:{" "}
-                  <span className="font-extrabold text-amber-100">
+                  <a
+                    href={`tel:${business.phone}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-extrabold text-amber-100 hover:underline"
+                  >
                     888-290 4476
-                  </span>
+                  </a>
                 </span>
 
                 <span className="text-amber-300/60 font-bold">✦</span>
